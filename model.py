@@ -67,25 +67,27 @@ res = odeint(deriv ,xinit ,time)
 plt.figure()
 
 #ID of New York
-st1 = hash("Maryland",h)
-
+st1 = hash("New York",h)
+#print st1
+print res[:,st1]
 s1, = plt.plot(time, res[:,st1])
 i1, = plt.plot(time, res[:,st1 + 51])
 r1, = plt.plot(time, res[:,st1 + 102])
 
 #ID of Connecticut
-st2 = hash("District of Columbia",h)
+st2 = hash("California",h)
+#print st2
 
 s2, = plt.plot(time, res[:,st2])
 i2, = plt.plot(time, res[:,st2 + 51])
 r2, = plt.plot(time, res[:,st2 + 102])
 
-plt.legend([s1, i1, r1, s2, i2, r2],["MD S", "MD I", "MD R", "DC S", "DC I", "DC R"])
-plt.title("Maryland and DC Simulation")
+plt.legend([s1, i1, r1, s2, i2, r2],["NY S", "NY I", "NY R", "CA S", "CA I", "CA R"])
+plt.title("New York and California Simulation")
 plt.ylabel("Number of People")
 plt.xlabel("Time")
 
-plt.show()
+#plt.show()
     
 
 
