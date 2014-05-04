@@ -12,9 +12,9 @@ h = f.readline().strip().split(",")
 
 
 def hash(s,l):
-    h.index(s) - 2
+    return l.index(s) - 2
 
-
+#print hash("California", h)
 # Initialize 53 empty lists
 s=[]
 for i in range(53):
@@ -61,4 +61,3 @@ for i in range(51):
         p[k] = [v , r]
     c[i] = p
     
-print c
