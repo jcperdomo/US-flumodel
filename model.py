@@ -50,10 +50,10 @@ def deriv(x, t):
 time = np.linspace(0, 5, 500) 
 
 #initialize all of the populations
-S = [70] * 50
-I = [0] * 50
+S = [70] * 51
+I = [0] * 51
 I[32] = 15
-R = [0] * 50
+R = [0] * 51
 
 #put them all together into an array
 SIR = S + I + R
@@ -67,21 +67,21 @@ res = odeint(deriv ,xinit ,time)
 plt.figure()
 
 #ID of New York
-st1 = 32
+st1 = hash("Maryland",h)
 
 s1, = plt.plot(time, res[:,st1])
-i1, = plt.plot(time, res[:,st1 + 50])
-r1, = plt.plot(time, res[:,st1 + 100])
+i1, = plt.plot(time, res[:,st1 + 51])
+r1, = plt.plot(time, res[:,st1 + 102])
 
 #ID of Connecticut
-st2 = hash("Connecticut",h)
+st2 = hash("District of Columbia",h)
 
-#s2, = plt.plot(time, res[:,st2])
-#i2, = plt.plot(time, res[:,st2 + 50])
-#r2, = plt.plot(time, res[:,st2 + 100])
+s2, = plt.plot(time, res[:,st2])
+i2, = plt.plot(time, res[:,st2 + 51])
+r2, = plt.plot(time, res[:,st2 + 102])
 
-#plt.legend([s1, i1, r1, s2, i2, r2],["NY S", "NY I", "NY R", "CT S", "CT I", "CT R"])
-plt.legend([s1, i1, r1],["S","I","R"])
+plt.legend([s1, i1, r1, s2, i2, r2],["MD S", "MD I", "MD R", "DC S", "DC I", "DC R"])
+plt.title("Maryland and DC Simulation")
 plt.ylabel("Number of People")
 plt.xlabel("Time")
 

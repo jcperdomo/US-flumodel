@@ -73,4 +73,4 @@ ibeta = 58
 for i in range(51):
      beta.append((vacc[i] * .01 * ibeta) ** -1)
 
-#print hash("Massachusetts",h)
+print hash("District of Columbia",h)
