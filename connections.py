@@ -61,3 +61,16 @@ for i in range(51):
         p[k] = [v , r]
     c[i] = p
     
+# http://www.cdc.gov/flu/fluvaxview/reports/reporti1213/reporti/index.htm
+# Percentage of people vaccinated per state, used to determine infection rate
+vacc = [45.7,39.7,38.3,47.0,44.2,48.3,46.5,51.3,47.4,34.1,41.1,54.3,
+    37.8,43.1,42.2,50.4,40.7,46.6,47.1,50.0,53.1,57.5,40.8,52.5,40.8,46.4,41.7,50.3,39.6,48.9,
+    45.3,48.1,46.6,50.1,48.9,44.8,46.1,40.1,46.2,56.7,44.8,56.7,50.8,43.7,42.9,49.6,49.4,47.5,
+    48.8,40.6,39.2]
+
+beta = []
+ibeta = 58
+for i in range(51):
+     beta.append((vacc[i] * .01 * ibeta) ** -1)
+
+#print hash("Massachusetts",h)

@@ -2,43 +2,44 @@
 import numpy as np
 import matplotlib.pyplot as plt 
 from scipy.integrate import odeint
-from connections import c, h, hash
+from connections import c, h, hash, beta
 
 
-beta = [.02] * 50
-gamma = 1
+gamma = 1.5
 
 #c is created in connections, includes strengths 
 
 #function that returns the derivative of all 150 equations
 def deriv(x, t):
     
-    #initialize an array of 150 elements to 0
-    y = np.zeros((150))
+    #initialize an array of 153 elements to 0
+    y = np.zeros((153))
     
-    #loop over first 50 elements and update S values
-    for i in range(50):
+    #loop over first 51 elements and update S values
+    for i in range(51):
         
         #update the first term
-        y[i] += -x[i] * beta[i] * x[i + 50]
+        y[i] += -x[i] * beta[i] * x[i + 51]
         
         #include all of the connections
         for j in range(len(c[i])):
-            y[i] += - x[i] * beta[i] * c[i][j][1] *x[c[i][j][0] + 50]
+            y[i] += - x[i] * beta[i] * c[i][j][1] *x[c[i][j][0] + 51]
             
+    
+    #loop over middle 50 elements and update I values
+    for i in range(51,102):
+        
+        #y[i] = x[i - 50] * beta[i - 51] 
+        #change in I is equal to - change in S - change in R
+        y[i] += -y[i - 51] - gamma * x[i]
     
     #loop over last 50 and update R values
-    for i in range(100,150):
+    for i in range(102,153):
         
         #update recovered 
-        y[i] += gamma  * y[i - 50]
+        y[i] += gamma  * x[i - 51]
             
-    #loop over middle 50 elements and update I values
-    for i in range(50,100):
-        
-        #change in I is equal to - change in S - change in R
-        y[i] += -y[i - 50] - y[i + 50]
-    
+
     #return updated array
     return y
 
@@ -46,15 +47,16 @@ def deriv(x, t):
 #solve set of differential equations
 
 #time interval of the disease
-time = np.linspace(0, 5, 100) 
+time = np.linspace(0, 5, 500) 
 
-S = [90] * 50
+#initialize all of the populations
+S = [70] * 50
 I = [0] * 50
-I[32] = 3
+I[32] = 15
 R = [0] * 50
 
+#put them all together into an array
 SIR = S + I + R
-#initial values
 xinit = np.array(SIR)
 
 
@@ -64,9 +66,6 @@ res = odeint(deriv ,xinit ,time)
 #Plot of the values
 plt.figure()
 
-#for i in range(50):
-#    plt.plot(time, res[:,i])
-
 #ID of New York
 st1 = 32
 
@@ -75,13 +74,14 @@ i1, = plt.plot(time, res[:,st1 + 50])
 r1, = plt.plot(time, res[:,st1 + 100])
 
 #ID of Connecticut
-st2 = 8
+st2 = hash("Connecticut",h)
 
-s2, = plt.plot(time, res[:,st2])
-i2, = plt.plot(time, res[:,st2 + 50])
-r2, = plt.plot(time, res[:,st2 + 100])
+#s2, = plt.plot(time, res[:,st2])
+#i2, = plt.plot(time, res[:,st2 + 50])
+#r2, = plt.plot(time, res[:,st2 + 100])
 
-plt.legend([s1, i1, r1, s2, i2, r2],["NY S", "NY I", "NY R", "CA S", "CA I", "CA R"])
+#plt.legend([s1, i1, r1, s2, i2, r2],["NY S", "NY I", "NY R", "CT S", "CT I", "CT R"])
+plt.legend([s1, i1, r1],["S","I","R"])
 plt.ylabel("Number of People")
 plt.xlabel("Time")
 
