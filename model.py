@@ -5,7 +5,7 @@ from scipy.integrate import odeint
 from connections import c, h, hash, beta
 
 
-gamma = 1.5
+gamma = 5.0
 
 #c is created in connections, includes strengths 
 
@@ -69,7 +69,7 @@ plt.figure()
 #ID of New York
 st1 = hash("New York",h)
 #print st1
-print res[:,st1]
+
 s1, = plt.plot(time, res[:,st1])
 i1, = plt.plot(time, res[:,st1 + 51])
 r1, = plt.plot(time, res[:,st1 + 102])
@@ -87,7 +87,7 @@ plt.title("New York and California Simulation")
 plt.ylabel("Number of People")
 plt.xlabel("Time")
 
-#plt.show()
+plt.show()
     
 
 
