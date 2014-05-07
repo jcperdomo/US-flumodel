@@ -69,8 +69,9 @@ vacc = [45.7,39.7,38.3,47.0,44.2,48.3,46.5,51.3,47.4,34.1,41.1,54.3,
     48.8,40.6,39.2]
 
 beta = []
-ibeta = 58
+ibeta = 120
 for i in range(51):
      beta.append((vacc[i] * .01 * ibeta) ** -1)
 
+#print beta
 #print hash("District of Columbia",h)

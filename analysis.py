@@ -3,13 +3,9 @@ from connections import s, hash, h
 from model import res, st1, st2
 from numpy import corrcoef
 
-#calculate the indices 
-CA = hash("California", h) + 2
-NY = hash("New York", h) + 2
 
-
-a = res[:,st1 + 102]
-b = res[:,st2 + 102]
+a = res[51:,st1 + 51]
+b = res[51:,st2 + 51]
 
 #Compare correlations between states
 print "Correlation according to google flu : ",correl(s[st1 + 2],s[st2 + 2])

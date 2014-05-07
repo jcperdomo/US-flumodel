@@ -3,9 +3,24 @@ import numpy as np
 import matplotlib.pyplot as plt 
 from scipy.integrate import odeint
 from connections import c, h, hash, beta
+from math import sin, pi
 
+#recovery rate
+gamma = 1.
 
-gamma = 5.0
+#correlation scaling factor between populations
+lmbd = .0000001
+
+#correlation with the general population
+mu = .000000000000000000002
+
+#rate at which people become susceptible again
+alpha = .1
+
+#function to introduce seasonal variation
+def svar(t):
+    
+    return (1. + .02 * sin(t* pi/52.) + .4 * sin(2.5* pi*t/52.) + .05 * sin(t*pi*2/52.))
 
 #c is created in connections, includes strengths 
 
@@ -19,25 +34,27 @@ def deriv(x, t):
     for i in range(51):
         
         #update the first term
-        y[i] += -x[i] * beta[i] * x[i + 51]
+        y[i] += -x[i] * beta[i] * svar(t) * x[i + 51] + alpha * x[i + 102]
         
         #include all of the connections
         for j in range(len(c[i])):
-            y[i] += - x[i] * beta[i] * c[i][j][1] *x[c[i][j][0] + 51]
+            y[i] += - x[i] * beta[i] * svar(t) * (c[i][j][1] * lmbd) *x[c[i][j][0] + 51]
+        
+        #include correlation with the US as a whole
+        #y[i] += -mu * sum(x[51:102])/51
             
     
     #loop over middle 50 elements and update I values
     for i in range(51,102):
         
-        #y[i] = x[i - 50] * beta[i - 51] 
         #change in I is equal to - change in S - change in R
-        y[i] += -y[i - 51] - gamma * x[i]
+        y[i] += -y[i - 51] - gamma * x[i] + alpha *x[i + 51]
     
     #loop over last 50 and update R values
     for i in range(102,153):
         
         #update recovered 
-        y[i] += gamma  * x[i - 51]
+        y[i] += gamma  * x[i - 51] - alpha * x[i]
             
 
     #return updated array
@@ -47,12 +64,12 @@ def deriv(x, t):
 #solve set of differential equations
 
 #time interval of the disease
-time = np.linspace(0, 5, 500) 
+time = np.linspace(0, 300, 300) 
 
 #initialize all of the populations
-S = [70] * 51
+S = [100] * 51
 I = [0] * 51
-I[32] = 15
+I[32] = 4
 R = [0] * 51
 
 #put them all together into an array
